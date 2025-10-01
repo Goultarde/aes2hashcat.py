@@ -59,8 +59,19 @@ python3 aes_decrypt.py document.txt.aes -p secret123
 ## Requirements
 
 - Python 3.x
-- pyAesCrypt (for decryption script): `pip install pyAesCrypt`
-- No external dependencies required for hash extraction
+- pyAesCrypt (for decryption script)
+
+### Installation
+
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Or install manually
+pip install pyAesCrypt
+```
+
+**Note:** No external dependencies required for hash extraction (`aes2hashcat.py`)
 
 ## Supported File Format
 
