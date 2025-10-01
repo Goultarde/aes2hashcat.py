@@ -7,6 +7,50 @@ import argparse
 
 buffer_size = 64 * 1024  # 64KB
 
+def detect_file_type(magic_bytes):
+    """Detect file type based on magic bytes"""
+    magic_signatures = {
+        b'PK\x03\x04': 'ZIP archive',
+        b'PK\x05\x06': 'ZIP archive (empty)',
+        b'PK\x07\x08': 'ZIP archive (spanned)',
+        b'\x1f\x8b\x08': 'GZIP archive',
+        b'BZh': 'BZIP2 archive',
+        b'\x7fELF': 'ELF executable',
+        b'MZ': 'Windows executable (PE)',
+        b'\x89PNG': 'PNG image',
+        b'\xff\xd8\xff': 'JPEG image',
+        b'GIF8': 'GIF image',
+        b'RIFF': 'RIFF container (WAV/AVI)',
+        b'%PDF': 'PDF document',
+        b'\x00\x00\x01\x00': 'Windows icon',
+        b'\x00\x00\x02\x00': 'Windows cursor',
+        b'ftyp': 'MP4 video',
+        b'\x00\x00\x00\x18': 'MP4 video',
+        b'ID3': 'MP3 audio',
+        b'\xff\xfb': 'MP3 audio',
+        b'\xff\xf3': 'MP3 audio',
+        b'\xff\xf2': 'MP3 audio',
+        b'OggS': 'OGG audio/video',
+        b'Rar!': 'RAR archive',
+        b'\x37\x7a\xbc\xaf': '7-Zip archive',
+        b'\x50\x4b\x03\x04': 'ZIP archive',
+        b'\x50\x4b\x05\x06': 'ZIP archive (empty)',
+        b'\x50\x4b\x07\x08': 'ZIP archive (spanned)',
+    }
+    
+    for signature, file_type in magic_signatures.items():
+        if magic_bytes.startswith(signature):
+            return file_type
+    
+    # Check for text files
+    try:
+        if all(32 <= b <= 126 or b in [9, 10, 13] for b in magic_bytes):
+            return 'Text file'
+    except:
+        pass
+    
+    return 'Unknown file type'
+
 def decrypt_file(encrypted_file, password, output_file=None):
     """
     Decrypt an .aes file
@@ -52,6 +96,16 @@ def decrypt_file(encrypted_file, password, output_file=None):
             print(f"\nDecryption successful!")
             print(f"File created: {output_file}")
             print(f"Size: {decrypted_size:,} bytes ({decrypted_size/1024/1024:.2f} MB)")
+            
+            # Detect file type and show appropriate message
+            try:
+                with open(output_file, 'rb') as f:
+                    magic_bytes = f.read(4)
+                    file_type = detect_file_type(magic_bytes)
+                    print(f"File type: {file_type}")
+            except:
+                pass
+            
             return True
         else:
             print("Error: The decrypted file was not created")
@@ -101,7 +155,22 @@ Usage examples:
     print("=" * 60)
     if success:
         print("Operation completed successfully!")
-        print("You can now extract the ZIP file.")
+        # Check if it's a ZIP file and show appropriate message
+        try:
+            with open(args.file if args.output is None else args.output, 'rb') as f:
+                magic_bytes = f.read(4)
+                if magic_bytes.startswith(b'PK'):
+                    print("You can now extract the ZIP file.")
+                elif magic_bytes.startswith(b'%PDF'):
+                    print("You can now open the PDF document.")
+                elif magic_bytes.startswith(b'\x89PNG') or magic_bytes.startswith(b'\xff\xd8\xff'):
+                    print("You can now view the image file.")
+                elif magic_bytes.startswith(b'RIFF'):
+                    print("You can now play the media file.")
+                else:
+                    print("The decrypted file is ready to use.")
+        except:
+            print("The decrypted file is ready to use.")
     else:
         print("The operation failed.")
     print("=" * 60)
