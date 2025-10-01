@@ -155,22 +155,6 @@ Usage examples:
     print("=" * 60)
     if success:
         print("Operation completed successfully!")
-        # Check if it's a ZIP file and show appropriate message
-        try:
-            with open(args.file if args.output is None else args.output, 'rb') as f:
-                magic_bytes = f.read(4)
-                if magic_bytes.startswith(b'PK'):
-                    print("You can now extract the ZIP file.")
-                elif magic_bytes.startswith(b'%PDF'):
-                    print("You can now open the PDF document.")
-                elif magic_bytes.startswith(b'\x89PNG') or magic_bytes.startswith(b'\xff\xd8\xff'):
-                    print("You can now view the image file.")
-                elif magic_bytes.startswith(b'RIFF'):
-                    print("You can now play the media file.")
-                else:
-                    print("The decrypted file is ready to use.")
-        except:
-            print("The decrypted file is ready to use.")
     else:
         print("The operation failed.")
     print("=" * 60)
