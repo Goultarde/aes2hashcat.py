@@ -29,10 +29,33 @@ Expected output:
 $aescrypt$1*[iv_hex]*[iv_enc_hex]*[key_enc_hex]*[hmac_hex]
 ```
 
+## Hashcat Usage
+
+After extracting the hash, you can use Hashcat to crack the password:
+
+```bash
+# Save the hash to a file
+echo '$aescrypt$1*[iv_hex]*[iv_enc_hex]*[key_enc_hex]*[hmac_hex]' > aes_hash.txt
+
+# Run Hashcat with wordlist
+hashcat --hash-type 22400 --attack-mode 0 aes_hash.txt `fzf-wordlists`
+```
+
+## Decryption
+
+If you have the password, you can decrypt the file directly:
+
+```bash
+python3 aes_decrypt.py file.txt.aes password
+```
+
+This will create a decrypted file with the original name (without .aes extension).
+
 ## Requirements
 
 - Python 3.x
-- No external dependencies required
+- pycryptodome (for decryption script): `pip install pycryptodome`
+- No external dependencies required for hash extraction
 
 ## Supported File Format
 

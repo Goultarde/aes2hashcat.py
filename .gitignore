@@ -128,10 +128,17 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# AESCrypt files (exemples de fichiers chiffrés)
+# AESCrypt files (example encrypted files)
 *.aes
 *.aescrypt
 
-# Fichiers temporaires
+# Hash files
+*_hash.txt
+aes_hash.txt
+
+# Decrypted files
+*.decrypted
+
+# Temporary files
 *.tmp
 *.temp
