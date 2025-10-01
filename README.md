@@ -1,38 +1,31 @@
 # AES2Hashcat
 
-A Python script to extract encryption information from aescrypt version 2 files and convert them to Hashcat format.
+A complete toolkit for working with aescrypt version 2 files. Extract hashes for password cracking with Hashcat or decrypt files directly when you have the password.
 
 ## Description
 
-This script analyzes an aescrypt encrypted file and extracts the components needed for decryption:
+This toolkit provides two main functionalities:
+
+### 1. Hash Extraction (`aes2hashcat.py`)
+Extracts encryption components from aescrypt files and converts them to Hashcat format:
 - IV (Initialization Vector) for KDF
 - Encrypted IV for AES decryption
 - Encrypted key
 - HMAC
 
-The script generates a Hashcat format hash to facilitate password cracking.
+### 2. Direct Decryption (`aes_decrypt.py`)
+Decrypts aescrypt files directly when you have the password using pyAesCrypt library.
 
 ## Usage
 
+### Option 1: Password Cracking with Hashcat
+
+1. **Extract the hash:**
 ```bash
 python3 aes2hashcat.py file.txt.aes
 ```
 
-### Example
-
-```bash
-python3 aes2hashcat.py document.txt.aes
-```
-
-Expected output:
-```
-$aescrypt$1*[iv_hex]*[iv_enc_hex]*[key_enc_hex]*[hmac_hex]
-```
-
-## Hashcat Usage
-
-After extracting the hash, you can use Hashcat to crack the password:
-
+2. **Save the hash and crack with Hashcat:**
 ```bash
 # Save the hash to a file
 echo '$aescrypt$1*[iv_hex]*[iv_enc_hex]*[key_enc_hex]*[hmac_hex]' > aes_hash.txt
@@ -41,15 +34,27 @@ echo '$aescrypt$1*[iv_hex]*[iv_enc_hex]*[key_enc_hex]*[hmac_hex]' > aes_hash.txt
 hashcat --hash-type 22400 --attack-mode 0 aes_hash.txt `fzf-wordlists`
 ```
 
-## Decryption
-
-If you have the password, you can decrypt the file directly:
+### Option 2: Direct Decryption (when you have the password)
 
 ```bash
 python3 aes_decrypt.py file.txt.aes -p password
 ```
 
 This will create a decrypted file with the original name (without .aes extension).
+
+### Examples
+
+**Hash extraction:**
+```bash
+python3 aes2hashcat.py document.txt.aes
+# Output: $aescrypt$1*[iv_hex]*[iv_enc_hex]*[key_enc_hex]*[hmac_hex]
+```
+
+**Direct decryption:**
+```bash
+python3 aes_decrypt.py document.txt.aes -p secret123
+# Creates: document.txt (decrypted)
+```
 
 ## Requirements
 
