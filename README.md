@@ -46,7 +46,7 @@ hashcat --hash-type 22400 --attack-mode 0 aes_hash.txt `fzf-wordlists`
 If you have the password, you can decrypt the file directly:
 
 ```bash
-python3 aes_decrypt.py file.txt.aes password
+python3 aes_decrypt.py file.txt.aes -p password
 ```
 
 This will create a decrypted file with the original name (without .aes extension).
@@ -54,7 +54,7 @@ This will create a decrypted file with the original name (without .aes extension
 ## Requirements
 
 - Python 3.x
-- pycryptodome (for decryption script): `pip install pycryptodome`
+- pyAesCrypt (for decryption script): `pip install pyAesCrypt`
 - No external dependencies required for hash extraction
 
 ## Supported File Format
