@@ -5,8 +5,8 @@ import struct
 
 def read_bytes(file_handle, size):
     """
-    Lit exactement 'size' octets du fichier.
-    Lève une exception si tous les octets ne peuvent pas être lus.
+    Read exactly 'size' bytes from the file.
+    Raises an exception if all bytes cannot be read.
     """
     data = file_handle.read(size)
     

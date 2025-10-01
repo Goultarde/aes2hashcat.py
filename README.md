@@ -1,58 +1,58 @@
-# AESCrypt Extractor
+# AES2Hashcat
 
-Un script Python pour extraire les informations de chiffrement des fichiers aescrypt version 2.
+A Python script to extract encryption information from aescrypt version 2 files and convert them to Hashcat format.
 
 ## Description
 
-Ce script analyse un fichier chiffré avec aescrypt et extrait les composants nécessaires pour le déchiffrement :
-- IV (Initialization Vector) pour KDF
-- IV chiffré pour le déchiffrement AES
-- Clé chiffrée
+This script analyzes an aescrypt encrypted file and extracts the components needed for decryption:
+- IV (Initialization Vector) for KDF
+- Encrypted IV for AES decryption
+- Encrypted key
 - HMAC
 
-Le script génère un hash au format John the Ripper pour faciliter le craquage de mot de passe.
+The script generates a Hashcat format hash to facilitate password cracking.
 
-## Utilisation
-
-```bash
-python3 aescrypt_extractor.py fichier.txt.aes
-```
-
-### Exemple
+## Usage
 
 ```bash
-python3 aescrypt_extractor.py document.txt.aes
+python3 aes2hashcat.py file.txt.aes
 ```
 
-Sortie attendue :
+### Example
+
+```bash
+python3 aes2hashcat.py document.txt.aes
+```
+
+Expected output:
 ```
 $aescrypt$1*[iv_hex]*[iv_enc_hex]*[key_enc_hex]*[hmac_hex]
 ```
 
-## Prérequis
+## Requirements
 
 - Python 3.x
-- Aucune dépendance externe requise
+- No external dependencies required
 
-## Format de fichier supporté
+## Supported File Format
 
-- AESCrypt version 2 uniquement
-- Signature de fichier : "AES"
+- AESCrypt version 2 only
+- File signature: "AES"
 
-## Gestion d'erreurs
+## Error Handling
 
-Le script gère les erreurs suivantes :
-- Fichier introuvable
-- Format de fichier incorrect
-- Signature invalide
-- Version non supportée
-- Lecture incomplète des données
+The script handles the following errors:
+- File not found
+- Incorrect file format
+- Invalid signature
+- Unsupported version
+- Incomplete data reading
 
-## Code de sortie
+## Exit Codes
 
-- `0` : Succès
-- `1` : Erreur (fichier introuvable, format incorrect, etc.)
+- `0`: Success
+- `1`: Error (file not found, incorrect format, etc.)
 
-## Licence
+## License
 
-Ce script est fourni tel quel pour des fins éducatives et de recherche en sécurité.
+This script is provided as-is for educational and security research purposes.
